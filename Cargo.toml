@@ -1,0 +1,4 @@
+[workspace]
+
+
+members = ["ct-ex1", "ct-ex2"]
