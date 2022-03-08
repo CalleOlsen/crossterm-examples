@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, thread, time::Duration};
 
 use crossterm::{
     event::EnableMouseCapture,
@@ -16,5 +16,7 @@ fn main() {
         .show_cursor()
         .expect("Unable to use the terminal properly");
 
-    disable_raw_mode();
+    ct_ex2::terminal_draw(&mut terminal).expect("Could not figure out terminal_draw");
+    thread::sleep(Duration::from_millis(5000));
+    ct_ex2::restore_terminal(&mut terminal).expect("Unable to restore terminal");
 }
