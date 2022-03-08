@@ -1,4 +1,7 @@
-use std::{error::Error, io};
+use std::{
+    error::Error,
+    io::{self, Write},
+};
 use tui::{
     backend::{Backend, CrosstermBackend},
     widgets::{Block, Borders, Widget},
@@ -18,9 +21,6 @@ pub fn create_terminal() -> Result<term_type, Box<dyn Error>> {
     enable_raw_mode()?;
     let mut stdout = io::stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
-    // stdout
-    //     .execute(EnterAlternateScreen)?
-    //     .execute(EnableMouseCapture);
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = tui::Terminal::new(backend)?;
     Ok(terminal)
@@ -42,5 +42,14 @@ pub fn restore_terminal(terminal: &mut term_type) -> Result<(), Box<dyn Error>> 
         .execute(LeaveAlternateScreen)?
         .execute(DisableMouseCapture)?;
     terminal.show_cursor()?;
+    Ok(())
+}
+
+pub fn add_str(msg: &str, x: u16, y: u16, terminal: &mut term_type) -> Result<(), Box<dyn Error>> {
+    terminal.set_cursor(x, y)?;
+    let mut backend = terminal.backend_mut();
+    //backend.write(b"Message ")?;
+    //backend.flush()?;
+    println!("Hoola hopp: <{}>", msg);
     Ok(())
 }
