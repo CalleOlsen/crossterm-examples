@@ -14,14 +14,17 @@ fn main() {
     let stdout = io::stdout();
     let mut terminal = ct_ex2::create_terminal().expect("Terminal unusable");
     terminal
-        .show_cursor()
+        .hide_cursor()
+        //.show_cursor()
         .expect("Unable to use the terminal properly");
     ct_ex2::terminal_draw(&mut terminal).expect("Could not figure out terminal_draw");
-    for var in 0..200 {
-        terminal.clear();
-        add_str("Hello", var + 2, 15, &mut terminal).unwrap();
-        add_str("Erik", 15, var + 2, &mut terminal).unwrap();
-        thread::sleep(Duration::from_millis(120));
-    }
+    // for var in 0..35 {
+    //     terminal.clear();
+    //     ct_ex2::terminal_draw(&mut terminal).expect("Could not figure out terminal_draw");
+    //     add_str("Hello", var + 2, 15, &mut terminal).unwrap();
+    //     add_str("Erik", 15, var + 2, &mut terminal).unwrap();
+    //     thread::sleep(Duration::from_millis(220));
+    // }
+    ct_ex2::run_loop(&mut terminal).expect("Unable to run loop");
     ct_ex2::restore_terminal(&mut terminal).expect("Unable to restore terminal");
 }
