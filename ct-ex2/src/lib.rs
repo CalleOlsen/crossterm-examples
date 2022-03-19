@@ -8,6 +8,7 @@ use tui::{
     backend::{Backend, CrosstermBackend},
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
+    text::{Span, Spans},
     widgets::{Block, Borders, Gauge, Paragraph, Widget},
     Frame, Terminal,
 };
@@ -85,6 +86,8 @@ where
         .percent(20);
 
     frame.render_widget(gauge, chunks[1]);
+    let paragrah = make_paragraph("This should be ok");
+    frame.render_widget(paragrah, chunks[2]);
 }
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,10 +95,23 @@ where
 // a rectangle (kind of a frame) and we want to
 // insert text here.
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fn make_paragraph(rect: Rect, text: &str) -> Result<(), Box<dyn Error>> {
-    let txt = vec![Sp]
+fn make_paragraph(text: &str) -> Paragraph {
+    //let txt = vec![Span::raw("This is a line"), Span::raw(text)];
 
-    Ok(())
+    let txt = vec![
+        Spans::from(vec![
+            Span::raw("First"),
+            Span::styled("line", Style::default().add_modifier(Modifier::ITALIC)),
+            Span::raw("."),
+        ]),
+        Spans::from(Span::styled("Second line", Style::default().fg(Color::Red))),
+        Spans::from(Span::raw(text)),
+    ];
+
+    let paragraph =
+        Paragraph::new(txt).block(Block::default().title("Hello Title").borders(Borders::ALL));
+
+    paragraph
 }
 
 pub fn restore_terminal(terminal: &mut term_type) -> Result<(), Box<dyn Error>> {
